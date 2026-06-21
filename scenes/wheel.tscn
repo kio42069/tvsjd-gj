@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bwv8vu22e48w0"]
+
+[ext_resource type="Script" uid="uid://mrobnvte5tfn" path="res://scripts/wheel.gd" id="1_c65p7"]
+[ext_resource type="Texture2D" uid="uid://blh766fso0dlc" path="res://assets/sprites/Cog Wheels - Gears/SpriteSheets/Silver Gear Wheels/Gear 5 - Silver_spritesheet.png" id="2_c65p7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c4vv4"]
+radius = 19.026299
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b52vq"]
+atlas = ExtResource("2_c65p7")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drh0d"]
+atlas = ExtResource("2_c65p7")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c4vv4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b52vq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drh0d")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Wheel" type="AnimatableBody2D" unique_id=218865686]
+script = ExtResource("1_c65p7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1365414287]
+shape = SubResource("CircleShape2D_c4vv4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1134618269]
+position = Vector2(-3.8146973e-06, 3.8146973e-06)
+scale = Vector2(2.55, 2.55)
+sprite_frames = SubResource("SpriteFrames_c4vv4")
+frame = 1
+frame_progress = 0.4098446
