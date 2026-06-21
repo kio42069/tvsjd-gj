@@ -17,7 +17,6 @@ var gravity = 30
 
 
 func _physics_process(delta: float) -> void:
-
 	# Add the gravity.
 	timer += 1
 	
