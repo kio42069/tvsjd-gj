@@ -16,6 +16,7 @@ var jumptimer:float = 0.0
 var gravity = 2000
 var is_jumping = false
 
+
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var atk: AnimatedSprite2D = $atk
 
