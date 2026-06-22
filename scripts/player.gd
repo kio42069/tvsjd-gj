@@ -138,7 +138,7 @@ func _physics_process(delta: float) -> void:
 			projectile.global_position = global_position + Vector2(0, -7)
 		
 		get_parent().add_child(projectile)
-	if timer % 10 == 0:
+	if timer % 15 == 0:
 		spins -= 1
 		whoaspins -= 1
 
