@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cfvwufeu5lxc3"]
 
-[ext_resource type="AudioStream" uid="uid://bdqraexs2oxfx" path="res://assets/sfx/Leo_Mcshizzle_Bad_Boy_Supreme.wav" id="1_q5y64"]
+[ext_resource type="AudioStream" uid="uid://bfv3gdhxwvslp" path="res://assets/sfx/Devil May Cry 5 - Special Edition ''Devils Never Cry'' Lyrics [JUaBL5lpPdI].mp3" id="1_q5y64"]
 
-[node name="Bgm" type="AudioStreamPlayer2D" unique_id=1189901257]
+[node name="Bgm" type="AudioStreamPlayer" unique_id=1863562156]
 stream = ExtResource("1_q5y64")
 autoplay = true
