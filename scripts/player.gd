@@ -17,20 +17,25 @@ var jumptimer:float = 0.0
 var gravity = 2000
 var is_jumping = false
 
+var last_checkpoint: Vector2
 
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var atk: AnimatedSprite2D = $atk
 
+func _ready() -> void:
+	print("setting cp init")
+	last_checkpoint = global_position
 
 func _physics_process(delta: float) -> void:
-	
 	var env_time_scale:float = 1.0
-	if spins <= 150 and spins > 100:
+	if spins > 150:
+		env_time_scale = 1
+	elif spins <= 150 and spins > 100:
 		env_time_scale = spins * 0.01
-	elif spins <= 100:
+	elif spins <= 100 and spins > 0:
 		env_time_scale = spins * 0.005
 	else:
-		env_time_scale = 1
+		env_time_scale = 0.01
 		
 	Engine.time_scale = env_time_scale
 	
@@ -104,6 +109,11 @@ func _physics_process(delta: float) -> void:
 		
 		
 	# like clockwork
+	if Input.is_action_just_pressed("enter"):
+		print("player x:", player.global_position.x)
+		print("player y:", player.global_position.y)
+		print("checkpoint x", last_checkpoint.x)
+		print("checkpoint y", last_checkpoint.y)
 	if Input.is_action_just_pressed("spin"):
 		if spins <= 200:
 			spins += 10
@@ -129,6 +139,7 @@ func _physics_process(delta: float) -> void:
 		SPEED = spins
 	else:
 		SPEED = 300
+		
 
 
 func _on_atk_animation_finished() -> void:

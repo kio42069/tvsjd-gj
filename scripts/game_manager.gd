@@ -2,7 +2,7 @@ extends CanvasLayer
 @export var player: CharacterBody2D
 @export var label: Label
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player:
 		label.text = str(player.spins) + " spins left"
 		if player.spins < 50:
