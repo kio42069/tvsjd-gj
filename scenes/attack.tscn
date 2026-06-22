@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://sslrw1olrfby"]
 
+[ext_resource type="Script" uid="uid://vop0djx4m3aj" path="res://scripts/attack.gd" id="1_jy1op"]
 [ext_resource type="Texture2D" uid="uid://bee414krk4twb" path="res://assets/sprites/industrial.v2.png" id="1_nursx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jy1op"]
@@ -44,9 +45,21 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="atk" type="AnimatedSprite2D" unique_id=1918188701]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
+size = Vector2(22, 11)
+
+[node name="Projectile" type="Area2D" unique_id=1569675080]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_jy1op")
+
+[node name="atk" type="AnimatedSprite2D" parent="." unique_id=1918188701]
 sprite_frames = SubResource("SpriteFrames_c4vv4")
 frame = 5
 frame_progress = 1.0
 
-[node name="Node2D" type="Node2D" parent="." unique_id=569763048]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=39187900]
+position = Vector2(-5, 0.5)
+shape = SubResource("RectangleShape2D_c4vv4")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

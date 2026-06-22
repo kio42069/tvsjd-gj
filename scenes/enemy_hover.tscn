@@ -1,26 +1,33 @@
 [gd_scene format=3 uid="uid://dj1luj8nnj5j1"]
 
 [ext_resource type="Texture2D" uid="uid://bee414krk4twb" path="res://assets/sprites/industrial.v2.png" id="1_4d6vt"]
+[ext_resource type="Script" uid="uid://rcqhpcqmtwu1" path="res://scripts/enemy_hover.gd" id="1_cxmlj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tx0oy"]
+size = Vector2(9, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4d6vt"]
+atlas = ExtResource("1_4d6vt")
+region = Rect2(0, 432, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cxmlj"]
 atlas = ExtResource("1_4d6vt")
-region = Rect2(0, 400, 16, 16)
+region = Rect2(16, 432, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lqo8j"]
 atlas = ExtResource("1_4d6vt")
-region = Rect2(16, 400, 16, 16)
+region = Rect2(32, 432, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cj4el"]
 atlas = ExtResource("1_4d6vt")
-region = Rect2(32, 400, 16, 16)
+region = Rect2(48, 432, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_y88wd"]
-atlas = ExtResource("1_4d6vt")
-region = Rect2(48, 400, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_c4vv4"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_u3epk"]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4d6vt")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cxmlj")
 }, {
@@ -29,18 +36,34 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cj4el")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_y88wd")
 }],
 "loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
 
-[node name="EnemyHover" type="Node2D" unique_id=1694710209]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1vr6d"]
+size = Vector2(9, 6)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1685909096]
-sprite_frames = SubResource("SpriteFrames_c4vv4")
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1752540653]
+collision_layer = 2
+script = ExtResource("1_cxmlj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=123478185]
+position = Vector2(-0.5, -2)
+shape = SubResource("RectangleShape2D_tx0oy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1549837232]
+sprite_frames = SubResource("SpriteFrames_u3epk")
 autoplay = "default"
-frame_progress = 0.6503092
+frame_progress = 0.053579662
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1123523055]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=522085173]
+position = Vector2(-0.5, -2)
+shape = SubResource("RectangleShape2D_1vr6d")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

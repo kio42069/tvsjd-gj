@@ -20,7 +20,8 @@ var is_jumping = false
 var last_checkpoint: Vector2
 
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
-@onready var atk: AnimatedSprite2D = $atk
+#@onready var atk: Area2D = $atk
+@export var attack: PackedScene = preload("res://scenes/attack.tscn")
 
 func _ready() -> void:
 	print("setting cp init")
@@ -44,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	var player_delta = global_delta * player_time_scale
 	
 	player.speed_scale = player_time_scale / env_time_scale
-	atk.speed_scale = player_time_scale / env_time_scale
+	#atk.speed_scale = player_time_scale / env_time_scale
 	# spin timer
 	timer += 1
 	
@@ -95,11 +96,11 @@ func _physics_process(delta: float) -> void:
 
 	if direction > 0:
 		player.flip_h = false
-		atk.set_offset(Vector2(0,0))
-		atk.flip_h = false
+		#atk.set_offset(Vector2(0,0))
+		#atk.flip_h = false
 	elif direction < 0:
-		atk.flip_h = true
-		atk.set_offset(Vector2(-30,0))
+		#atk.flip_h = true
+		#atk.set_offset(Vector2(-30,0))
 		player.flip_h = true
 	
 	if direction == 0 and current_state != State.ATK:
@@ -124,8 +125,19 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("x"):
 		player.play("atk")
 		current_state = State.ATK
-		atk.play("default")
-		print("attack started")
+		#atk.play("default")
+		#print("attack started")
+		
+		var projectile = attack.instantiate()
+		
+		if player.flip_h:
+			projectile.direction = Vector2.LEFT
+			projectile.global_position = global_position + Vector2(0, -7)
+		else:
+			projectile.direction = Vector2.RIGHT
+			projectile.global_position = global_position + Vector2(0, -7)
+		
+		get_parent().add_child(projectile)
 	if timer % 10 == 0:
 		spins -= 1
 		whoaspins -= 1
@@ -139,9 +151,14 @@ func _physics_process(delta: float) -> void:
 		SPEED = spins
 	else:
 		SPEED = 300
-		
 
 
-func _on_atk_animation_finished() -> void:
+func _on_animated_sprite_2d_animation_finished() -> void:
 	current_state = State.IDLE
-	print("attack ended")
+
+
+func _on_player_hurtbox_body_entered(body: Node2D) -> void:
+	print(body.name.to_lower())
+	if "enemy" in body.name.to_lower():
+		print("oops")
+		spins = 0

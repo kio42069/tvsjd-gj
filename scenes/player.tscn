@@ -118,7 +118,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tuyoq")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"atk",
 "speed": 10.0
 }, {
@@ -207,7 +207,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c4vv4"]
-radius = 5.0
+radius = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
+size = Vector2(8, 12.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=916762633]
 z_index = 10
@@ -217,10 +220,20 @@ script = ExtResource("1_g2els")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1245342871]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_c4vv4")
-animation = &"idle"
+animation = &"run"
 autoplay = "idle"
-frame_progress = 0.70655036
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2138972454]
-position = Vector2(0, -5)
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_c4vv4")
+
+[node name="PlayerHurtbox" type="Area2D" parent="." unique_id=1120007582]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHurtbox" unique_id=886897886]
+position = Vector2(0, -8.25)
+shape = SubResource("RectangleShape2D_c4vv4")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="PlayerHurtbox" to="." method="_on_player_hurtbox_body_entered"]
+[connection signal="body_entered" from="PlayerHurtbox" to="PlayerHurtbox" method="_on_body_entered"]
