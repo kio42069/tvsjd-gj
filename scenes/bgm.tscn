@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cfvwufeu5lxc3"]
+
+[ext_resource type="AudioStream" uid="uid://bdqraexs2oxfx" path="res://assets/sfx/Leo_Mcshizzle_Bad_Boy_Supreme.wav" id="1_q5y64"]
+
+[node name="Bgm" type="AudioStreamPlayer2D" unique_id=1189901257]
+stream = ExtResource("1_q5y64")
+autoplay = true

@@ -6,11 +6,14 @@ var current_state = State.IDLE
 var SPEED = 300.0
 var spins = 100
 var timer = 0
+var max_speed = 700
 
 # jumping stuff
-var jumpvelocity:float = 0.0
+const MAX_JUMP_TIME: float = 0.2
+const JUMP_VELOCITY: float = -400.0
 var jumptimer:float = 0.0
-var gravity = 30
+var gravity = 2000
+var is_jumping = false
 
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
 @onready var atk: AnimatedSprite2D = $atk
@@ -20,16 +23,32 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	timer += 1
 	
-	if Input.is_action_just_pressed("jump"):
-		jumpvelocity = -400 
-	if Input.is_action_pressed("jump") and jumptimer < 0.25:
-		velocity.y = jumpvelocity
-		jumptimer += delta
-	if !Input.is_action_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		#print("started jump")
+		velocity.y = JUMP_VELOCITY 
+		is_jumping = true
+	if Input.is_action_pressed("jump") and is_jumping:
+		#print("loong jump")
+		if jumptimer < MAX_JUMP_TIME:
+			#print("it works?")
+			print(jumptimer)
+			print(delta)
+			velocity.y = JUMP_VELOCITY
+			jumptimer += delta
+		else:
+			#print("nope", jumptimer)
+			is_jumping = false
+	if Input.is_action_just_released("jump"):
+		#print("jump ended")
+		is_jumping = false
+	if is_on_floor() and !Input.is_action_just_pressed("jump"):
+		#print("on the flooh")
+		is_jumping = false
 		jumptimer = 0.0
-		jumpvelocity = 0.0
-	if !is_on_floor():
-		velocity.y += gravity
+	else:
+		print("not on the flooh?")
+		if velocity.y < max_speed:
+			velocity.y += gravity * delta
 		#velocity += get_gravity() * delta
 	
 	# Get the input direction and handle the movement/deceleration.
@@ -54,10 +73,13 @@ func _physics_process(delta: float) -> void:
 		player.play("idle")
 	elif direction != 0 and current_state != State.ATK:
 		player.play("run")
+		
+		
+	# like clockwork
 	if Input.is_action_just_pressed("spin"):
-		spins += 5
+		spins += 10
 	if Input.is_action_just_pressed("unspin"):
-		spins -= 5
+		spins -= 10
 	if Input.is_action_just_pressed("x"):
 		player.play("atk")
 		current_state = State.ATK
@@ -65,10 +87,10 @@ func _physics_process(delta: float) -> void:
 		print("attack started")
 	if timer % 10 == 0:
 		spins -= 1
-	if spins <= 50:
-		Engine.time_scale = spins * 0.02
-	elif spins <= 30:
+	if spins <= 100 and spins > 50:
 		Engine.time_scale = spins * 0.01
+	elif spins <= 50:
+		Engine.time_scale = spins * 0.005
 	else:
 		Engine.time_scale = 1
 		

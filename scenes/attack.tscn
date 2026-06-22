@@ -48,3 +48,5 @@ animations = [{
 sprite_frames = SubResource("SpriteFrames_c4vv4")
 frame = 5
 frame_progress = 1.0
+
+[node name="Node2D" type="Node2D" parent="." unique_id=569763048]
