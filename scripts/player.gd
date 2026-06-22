@@ -9,6 +9,7 @@ var timer = 0
 var max_speed = 700
 
 # jumping stuff
+const PLAYER_TIME_SCALER = 1.1
 const MAX_JUMP_TIME: float = 0.2
 const JUMP_VELOCITY: float = -400.0
 var jumptimer:float = 0.0
@@ -31,8 +32,8 @@ func _physics_process(delta: float) -> void:
 		#print("loong jump")
 		if jumptimer < MAX_JUMP_TIME:
 			#print("it works?")
-			print(jumptimer)
-			print(delta)
+			#print(jumptimer)
+			#print(delta)
 			velocity.y = JUMP_VELOCITY
 			jumptimer += delta
 		else:
@@ -46,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		is_jumping = false
 		jumptimer = 0.0
 	else:
-		print("not on the flooh?")
+		#print("not on the flooh?")
 		if velocity.y < max_speed:
 			velocity.y += gravity * delta
 		#velocity += get_gravity() * delta
@@ -56,9 +57,15 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("left", "right")
 	if direction:
 		velocity.x = direction * SPEED
-		
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if Engine.time_scale < 1:
+		#print(velocity.x, velocity.y)
+		if abs(velocity.x) < max_speed:
+			velocity.x *= PLAYER_TIME_SCALER
+		if abs(velocity.y) < max_speed:
+			velocity.y *= 1.01
+		#gravity    *= PLAYER_TIME_SCALER
 	move_and_slide()
 	if direction > 0:
 		player.flip_h = false
