@@ -7,12 +7,12 @@ var SPEED = 300.0
 var spins = 200
 var whoaspins = 200
 var timer = 0
-var max_speed = 700
+var max_speed = 70000
 
 # jumping stuff
 const PLAYER_TIME_SCALER = 1.2
 const MAX_JUMP_TIME: float = 0.2
-const JUMP_VELOCITY: float = -400.0
+var JUMP_VELOCITY: float = -400.0
 var jumptimer:float = 0.0
 var gravity = 2000
 var is_jumping = false
@@ -149,8 +149,12 @@ func _physics_process(delta: float) -> void:
 	if whoaspins > 500:
 		spins = whoaspins
 		SPEED = spins
+		JUMP_VELOCITY = -400 - (spins)
+		gravity = (spins) + 2000
 	else:
 		SPEED = 300
+		JUMP_VELOCITY = -400
+		gravity = 2000
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
@@ -158,7 +162,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 
 func _on_player_hurtbox_body_entered(body: Node2D) -> void:
-	print(body.name.to_lower())
+	var body_name = body.name.to_lower()
+	print("Touched by: ", body_name)
 	if "enemy" in body.name.to_lower():
 		print("oops")
 		spins = 0
+	if "enemy" in body_name or "boss" in body_name or body.is_in_group("Enemy"):
+		print("Player hit by enemy! Retracting spins.")
+		
+		# Deduct 50 spins and clamp it so it doesn't drop below 0
+		spins = max(0, spins - 50)
+		whoaspins = max(0, whoaspins - 50)

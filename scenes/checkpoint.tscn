@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
 size = Vector2(3.5798125, 5.8989096)
 
-[node name="Sprite2D" type="Sprite2D" unique_id=1208993931]
+[node name="Checkpoint" type="Sprite2D" unique_id=1208993931]
 texture = ExtResource("1_yyywg")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1908336099]
