@@ -49,8 +49,7 @@ func _on_animation_finished() -> void:
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	# Replace "Player" with your exact Player script class name or group
 	if body.is_in_group("Player") and is_active:
-		if body.has_method("take_damage"):
-			body.take_damage(1) # Damage the player
+		body.spins -= 30 # Damage the player
 		
 		# Optional: Small ghosts pop and die after hitting the player once
 		is_active = false

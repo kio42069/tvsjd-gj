@@ -138,7 +138,8 @@ radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tx0oy"]
 
-[node name="SmallGhost" type="CharacterBody2D" unique_id=1391495161]
+[node name="SmallGhost" type="CharacterBody2D" unique_id=1391495161 groups=["Enemy"]]
+collision_layer = 2
 script = ExtResource("1_ol7q2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=910935444]

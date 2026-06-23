@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	print(body.name)
-	if body.name in "playerPlayer" or body is CharacterBody2D:
+	if body.is_in_group("Player"):
 		body.last_checkpoint = global_position
 		#print("cp x : ", global_position.x)
 		#print("cp y : ", global_position.y)

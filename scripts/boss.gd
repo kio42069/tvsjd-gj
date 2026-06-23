@@ -24,7 +24,7 @@ func _ready() -> void:
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 	add_to_group("Enemy")
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Death
 	if current_state == BossState.DEATH:
 		return

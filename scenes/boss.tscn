@@ -474,12 +474,14 @@ animations = [{
 size = Vector2(20.5, 23)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u3epk"]
-size = Vector2(7, 59)
+size = Vector2(27, 59)
 
 [node name="Boss" type="CharacterBody2D" unique_id=478411588]
 script = ExtResource("1_neq0i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=349047028]
+position = Vector2(3.8146973e-06, -3.8146973e-06)
+scale = Vector2(1.79, 1.79)
 sprite_frames = SubResource("SpriteFrames_u3epk")
 animation = &"skill"
 autoplay = "idle"
