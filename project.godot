@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 Bgm="*uid://cfvwufeu5lxc3"
+Management="*uid://c5jj1ani73t84"
+PauseMenu="*uid://c5xdhepti45r6"
 
 [display]
 

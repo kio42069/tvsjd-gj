@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://clelk33p0v6cq" path="res://scripts/checkpoint.gd" id="2_ywqth"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
-size = Vector2(1.5273864, 1.4863393)
+size = Vector2(3.007042, 2.740438)
 
 [node name="Checkpoint" type="Sprite2D" unique_id=1208993931]
 texture = ExtResource("1_ywqth")
@@ -20,7 +20,7 @@ scale = Vector2(20.95082, 21.529404)
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1506061630]
-position = Vector2(-1.999939, 0.99990845)
+position = Vector2(-2.0238044, 1.0695806)
 shape = SubResource("RectangleShape2D_c4vv4")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

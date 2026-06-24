@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bvqhc4n4qn4ga"]
+
+[ext_resource type="Script" uid="uid://dr6glekeki6gv" path="res://scripts/boss_ui.gd" id="1_e3e3d"]
+[ext_resource type="Texture2D" uid="uid://dcq76xoo8yofm" path="res://assets/sprites/Pixel Health Bar/Bar/no health bar.png" id="2_0vpow"]
+[ext_resource type="Texture2D" uid="uid://cb78quwc5le5i" path="res://assets/sprites/Pixel Health Bar/Bar/empty health bar.png" id="3_x7eb4"]
+[ext_resource type="Texture2D" uid="uid://bfclgifen33c7" path="res://assets/sprites/Pixel Health Bar/Health/health.png" id="4_b3x7t"]
+
+[node name="BossUI" type="CanvasLayer" unique_id=1125589831]
+script = ExtResource("1_e3e3d")
+
+[node name="BossHPBar" type="TextureProgressBar" parent="." unique_id=673335008]
+offset_right = 1416.0371
+offset_bottom = 126.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_0vpow")
+texture_over = ExtResource("3_x7eb4")
+texture_progress = ExtResource("4_b3x7t")

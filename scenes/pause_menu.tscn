@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://c5xdhepti45r6"]
+
+[ext_resource type="Script" uid="uid://p45htauqcnkl" path="res://scripts/pause_menu.gd" id="1_myx47"]
+[ext_resource type="FontFile" uid="uid://c687ugtpfgkil" path="res://assets/fonts/PixelOperator8.ttf" id="2_kukqi"]
+[ext_resource type="FontFile" uid="uid://d234tdpfsywqt" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="3_kukqi"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=667161689]
+process_mode = 3
+layer = 100
+script = ExtResource("1_myx47")
+
+[node name="Control" type="ColorRect" parent="." unique_id=1082861067]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1902960143]
+layout_mode = 0
+offset_left = 465.45
+offset_top = 188.56
+offset_right = 613.45
+offset_bottom = 275.56
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Control/VBoxContainer" unique_id=821272022]
+custom_minimum_size = Vector2(4.165, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kukqi")
+text = "Difficulty : "
+
+[node name="DifficultyButton" type="OptionButton" parent="Control/VBoxContainer" unique_id=2029446414]
+layout_mode = 2
+
+[node name="Volume" type="Label" parent="Control/VBoxContainer" unique_id=1963443893]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kukqi")
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="Control/VBoxContainer" unique_id=227166812]
+layout_mode = 2
+min_value = 0.001
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="ResumeButton" type="Button" parent="Control" unique_id=159531987]
+layout_mode = 0
+offset_left = 485.0
+offset_top = 350.0
+offset_right = 584.0
+offset_bottom = 358.0
+theme_override_fonts/font = ExtResource("3_kukqi")
+text = "Resume"
+
+[connection signal="item_selected" from="Control/VBoxContainer/DifficultyButton" to="." method="_on_difficulty_button_item_selected"]
+[connection signal="pressed" from="Control/ResumeButton" to="." method="_on_resume_button_pressed"]
