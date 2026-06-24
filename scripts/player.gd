@@ -8,6 +8,7 @@ var spins = 200
 var whoaspins = 200
 var timer = 0
 var max_speed = 70000
+const ACCELERATION = 5000
 
 # jumping stuff
 const PLAYER_TIME_SCALER = 1.2
@@ -16,15 +17,17 @@ var JUMP_VELOCITY: float = -400.0
 var jumptimer:float = 0.0
 var gravity = 2000
 var is_jumping = false
+const COYOTE_TIME: float = 0.15
+var coyote_timer:float = 0.0
+const JUMP_BUFFER_TIME: float = 0.15
+var jump_buffer_timer: float = 0.0
 
 var last_checkpoint: Vector2
 
 @onready var player: AnimatedSprite2D = $AnimatedSprite2D
-#@onready var atk: Area2D = $atk
 @export var attack: PackedScene = preload("res://scenes/attack.tscn")
 
 func _ready() -> void:
-	#print("setting cp init")
 	last_checkpoint = global_position
 
 func _physics_process(delta: float) -> void:
@@ -37,7 +40,6 @@ func _physics_process(delta: float) -> void:
 		env_time_scale = spins * 0.005
 	else:
 		env_time_scale = 0.01
-		
 	Engine.time_scale = env_time_scale
 	
 	var player_time_scale: float = lerp(env_time_scale, 1.0, 0.5)
@@ -45,45 +47,53 @@ func _physics_process(delta: float) -> void:
 	var player_delta = global_delta * player_time_scale
 	
 	player.speed_scale = player_time_scale / env_time_scale
-	#atk.speed_scale = player_time_scale / env_time_scale
-	# spin timer
 	timer += 1
 	
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		#print("started jump")
+	####### *sighs* jump stuff ts pmo sm
+	### Coyote time and Jump Buffer management
+	if is_on_floor():
+		coyote_timer = COYOTE_TIME
+	else:
+		coyote_timer -= player_delta
+	
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer_timer = JUMP_BUFFER_TIME
+	else:
+		jump_buffer_timer -= player_delta
+	
+	# Initialising a jump
+	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
 		velocity.y = JUMP_VELOCITY 
 		is_jumping = true
+		coyote_timer = 0.0
+		jump_buffer_timer = 0.0
+		
+	# Variable jump height
 	if Input.is_action_pressed("jump") and is_jumping:
-		#print("loong jump")
 		if jumptimer < MAX_JUMP_TIME:
-			#print("it works?")
-			#print(jumptimer)
-			#print(delta)
 			velocity.y = JUMP_VELOCITY
 			jumptimer += player_delta
 		else:
-			#print("nope", jumptimer)
 			is_jumping = false
 	if Input.is_action_just_released("jump"):
-		#print("jump ended")
 		is_jumping = false
+	
+	# Gravity (half?) anf apex hang time
 	if is_on_floor() and !Input.is_action_just_pressed("jump"):
-		#print("on the flooh")
 		is_jumping = false
 		jumptimer = 0.0
 	else:
-		#print("not on the flooh?")
 		if velocity.y < max_speed:
-			velocity.y += gravity * player_delta * 0.5
-		#velocity += get_gravity() * delta
+			if abs(velocity.y) < 100:
+				velocity.y += gravity * player_delta * 0.25
+			else:
+				velocity.y += gravity * player_delta * 0.5
 	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * player_delta)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, ACCELERATION * player_delta)
 	
 	var time_ratio = player_time_scale / env_time_scale
 	velocity = velocity * time_ratio	
@@ -92,29 +102,22 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		if velocity.y < max_speed:
-			velocity.y += gravity * player_delta * 0.5
+			if abs(velocity.y) < 100:
+				velocity.y += gravity * player_delta * 0.25
+			else:
+				velocity.y += gravity * player_delta * 0.5
 
 	if direction > 0:
 		player.flip_h = false
-		#atk.set_offset(Vector2(0,0))
-		#atk.flip_h = false
 	elif direction < 0:
-		#atk.flip_h = true
-		#atk.set_offset(Vector2(-30,0))
 		player.flip_h = true
 	
 	if direction == 0 and current_state != State.ATK:
 		player.play("idle")
 	elif direction != 0 and current_state != State.ATK:
 		player.play("run")
-		
-		
-	# like clockwork
-	#if Input.is_action_just_pressed("enter"):
-		#print("player x:", player.global_position.x)
-		#print("player y:", player.global_position.y)
-		#print("checkpoint x", last_checkpoint.x)
-		#print("checkpoint y", last_checkpoint.y)
+	
+	# time dilation
 	if Input.is_action_just_pressed("spin"):
 		if spins <= 200:
 			spins += 10
@@ -122,14 +125,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("unspin"):
 		spins -= 10
 		whoaspins -= 10
+		
+	# attacking
 	if Input.is_action_just_pressed("x"):
 		player.play("atk")
 		current_state = State.ATK
-		#atk.play("default")
-		#print("attack started")
-		
 		var projectile = attack.instantiate()
-		
 		if player.flip_h:
 			projectile.direction = Vector2.LEFT
 			projectile.global_position = global_position + Vector2(0, -7)
@@ -142,10 +143,7 @@ func _physics_process(delta: float) -> void:
 		spins -= 1
 		whoaspins -= 1
 
-		
-	#var wheel = $AnimatedSprite2D
-	#wheel.position = Vector2(-100,-200)
-	
+	# overcharming
 	if whoaspins > 500:
 		spins = whoaspins
 		SPEED = spins
@@ -168,7 +166,6 @@ func _on_player_hurtbox_body_entered(body: Node2D) -> void:
 			var twitch = create_tween()
 			twitch.tween_property(player, "modulate", Color.RED, 0.1)
 			twitch.tween_property(player, "modulate", Color.WHITE, 0.1)
-			# Deduct 50 spins and clamp it so it doesn't drop below 0
 			spins = max(0, spins - 100)
 			whoaspins = max(0, whoaspins - 100)
 		else:

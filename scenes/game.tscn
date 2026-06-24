@@ -1158,7 +1158,6 @@ position = Vector2(141, -289)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Tartarus/Platform3" unique_id=987723112]
 libraries/ = SubResource("AnimationLibrary_iywne")
-autoplay = &"move"
 
 [node name="Platform5" parent="Platforms/Tartarus" unique_id=1561133974 instance=ExtResource("2_lnu2h")]
 position = Vector2(379, -337)
@@ -1182,7 +1181,6 @@ position = Vector2(69, -214)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Tartarus/Platform7" unique_id=617129013]
 libraries/ = SubResource("AnimationLibrary_gee14")
-autoplay = &"move"
 
 [node name="Asphodel" type="Node" parent="Platforms" unique_id=132024301]
 
