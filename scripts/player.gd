@@ -24,7 +24,7 @@ var last_checkpoint: Vector2
 @export var attack: PackedScene = preload("res://scenes/attack.tscn")
 
 func _ready() -> void:
-	print("setting cp init")
+	#print("setting cp init")
 	last_checkpoint = global_position
 
 func _physics_process(delta: float) -> void:
@@ -110,11 +110,11 @@ func _physics_process(delta: float) -> void:
 		
 		
 	# like clockwork
-	if Input.is_action_just_pressed("enter"):
-		print("player x:", player.global_position.x)
-		print("player y:", player.global_position.y)
-		print("checkpoint x", last_checkpoint.x)
-		print("checkpoint y", last_checkpoint.y)
+	#if Input.is_action_just_pressed("enter"):
+		#print("player x:", player.global_position.x)
+		#print("player y:", player.global_position.y)
+		#print("checkpoint x", last_checkpoint.x)
+		#print("checkpoint y", last_checkpoint.y)
 	if Input.is_action_just_pressed("spin"):
 		if spins <= 200:
 			spins += 10
@@ -162,8 +162,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 
 func _on_player_hurtbox_body_entered(body: Node2D) -> void:
-	var body_name = body.name.to_lower()
-
 	if body.is_in_group("Enemy"):
 		if body.is_in_group("Boss"):
 			print("Player hit by boss! Retracting spins.")
@@ -171,12 +169,12 @@ func _on_player_hurtbox_body_entered(body: Node2D) -> void:
 			twitch.tween_property(player, "modulate", Color.RED, 0.1)
 			twitch.tween_property(player, "modulate", Color.WHITE, 0.1)
 			# Deduct 50 spins and clamp it so it doesn't drop below 0
-			spins = max(0, spins - 50)
-			whoaspins = max(0, whoaspins - 50)
+			spins = max(0, spins - 100)
+			whoaspins = max(0, whoaspins - 100)
 		else:
 			print("Player hit by enemy!")
 			var twitch = create_tween()
 			twitch.tween_property(player, "modulate", Color.RED, 0.1)
 			twitch.tween_property(player, "modulate", Color.WHITE, 0.1)
-			spins = max(0,spins - 20)
-			whoaspins = max(whoaspins-20, 0)
+			spins = max(0,spins - 50)
+			whoaspins = max(whoaspins-50, 0)

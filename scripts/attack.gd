@@ -11,7 +11,7 @@ var distance_traveled: float = 0.0
 func _ready() -> void:
 	sprite.play("default")
 	sprite.flip_h = direction.x < 0
-	print(get_parent())
+	#print(get_parent())
 	
 func _physics_process(delta: float) -> void:
 	var move_amount = direction * speed * delta
@@ -22,9 +22,9 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		
 func _on_body_entered(body: Node2D) -> void:
-	print("whew")
+	#print("whew")
 	if body is CharacterBody2D and body.name == "Player":
-		print("whoops")
+		#print("whoops")
 		return
 		
 	print("Projectile hit: ", body.name)

@@ -35,6 +35,8 @@ version_control/autoload_on_startup=true
 Player=""
 Enemy=""
 Boss=""
+Attack=""
+BossMinions=""
 
 [input]
 

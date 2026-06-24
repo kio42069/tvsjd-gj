@@ -12,7 +12,7 @@ func _ready() -> void:
 	# 1. Start with the summon animation
 	is_active = false
 	sprite.play("summon")
-	sprite.animation_finished.connect(_on_animation_finished)
+	sprite.animation_finished.connect(_on_animated_sprite_2d_animation_finished)
 	
 	# Connect Hitbox to see if it touches the player
 	#hitbox.body_entered.connect(_on_hitbox_body_entered)
@@ -20,11 +20,13 @@ func _ready() -> void:
 	# Setup random drifting direction
 	_pick_new_direction()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not is_active: 
 		velocity = Vector2.ZERO
 		return
 		
+	if Input.is_action_just_pressed("enter"):
+		sprite.play("summon")
 	# Soft, floaty movement around its spawn area
 	velocity = velocity.move_toward(move_direction * float_speed, 2.0)
 	move_and_slide()
@@ -39,18 +41,19 @@ func _pick_new_direction() -> void:
 	if move_direction.x != 0:
 		sprite.flip_h = move_direction.x < 0
 
-func _on_animation_finished() -> void:
+func die():
+	sprite.play("death")
+
+func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "summon":
+		print("summonned")
 		is_active = true
 		sprite.play("idle") # Loop idle animation after spawning
 	elif sprite.animation == "death":
+		print("dying")
 		queue_free() # Safely delete ghost from memory
 
-func _on_hitbox_body_entered(body: Node2D) -> void:
-	# Replace "Player" with your exact Player script class name or group
-	if body.is_in_group("Player") and is_active:
-		body.spins -= 30 # Damage the player
-		
-		# Optional: Small ghosts pop and die after hitting the player once
-		is_active = false
-		sprite.play("death")
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area.is_in_group("Attack"):
+		die()

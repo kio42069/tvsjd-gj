@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
 enum BossState {IDLE, IDLE_2, ATTACK, SUMMON, SKILL, DEATH}
+@onready var boss_music: AudioStreamPlayer2D = $AudioStreamPlayer2D
+
+var is_active: bool = false
 
 @export var max_health: int = 10
 var current_health: int = max_health
@@ -20,19 +23,21 @@ var current_state = BossState.IDLE
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	state_timer.timeout.connect(_on_state_timer_timeout)
-	change_state(BossState.IDLE)
-	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	#change_state(BossState.IDLE)
 	add_to_group("Enemy")
+	sprite.play("idle 2")
 	
 func _physics_process(_delta: float) -> void:
 	# Death
-	if current_state == BossState.DEATH:
-		return
 	
+	if not is_active:
+		#print("idle")
+		return
+	#print("NOPE")
 	# Go towards player
 	if current_state == BossState.IDLE or current_state == BossState.IDLE_2:
 		if player:
-			var dir = (player.global_position - global_position).normalized()
+			var dir = (player.global_position - global_position + Vector2(0,10)).normalized()
 			velocity = velocity.move_toward(dir * speed, 5.0)
 			_look_at_player()
 	else:
@@ -72,7 +77,7 @@ func change_state(new_state: BossState) -> void:
 			velocity = Vector2.ZERO
 
 func _on_state_timer_timeout() -> void:
-	if current_state == BossState.DEATH: return
+	if current_state == BossState.DEATH or not is_active: return
 	
 	if current_state in [BossState.ATTACK, BossState.SKILL, BossState.SUMMON]:
 		change_state(BossState.IDLE if randf() > 0.5 else BossState.IDLE_2)
@@ -83,6 +88,7 @@ func _on_state_timer_timeout() -> void:
 func spawn_minion() -> void:
 	if small_ghost_scene:
 		var minion = small_ghost_scene.instantiate()
+		minion.add_to_group("BossMinions")
 		minion.global_position = spawner.global_position
 		if player: minion.player = player 
 		get_parent().add_child(minion)	
@@ -96,7 +102,7 @@ func take_damage(amount: int) -> void:
 		return
 		
 	current_health -= amount
-	print("Boss took damage! Current HP: ", current_health)
+	#print("Boss took damage! Current HP: ", current_health)
 	
 	# Flash the boss red briefly as damage feedback
 	var twitch = create_tween()
@@ -108,9 +114,20 @@ func take_damage(amount: int) -> void:
 		
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	# Checks if the overlapping area is your player's attack projectile
-	if area.name.to_lower().contains("attack") or area.is_in_group("PlayerAttack"):
+	if area.is_in_group("Attack"):
 		take_damage(1)
 		
 		# Optional: Destroy the projectile after hitting the boss
 		if area.has_method("queue_free"):
 			area.queue_free()
+			
+func activate_boss() -> void:
+	is_active = true
+	if boss_music and not boss_music.playing:
+		boss_music.play()
+	change_state(BossState.IDLE)
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if sprite.animation == "death":
+		get_tree().call_group("BossMinions", "die")
+		queue_free()

@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cfvwufeu5lxc3"]
 
-[ext_resource type="AudioStream" uid="uid://bfv3gdhxwvslp" path="res://assets/sfx/Devil May Cry 5 - Special Edition ''Devils Never Cry'' Lyrics [JUaBL5lpPdI].mp3" id="1_q5y64"]
+[ext_resource type="AudioStream" uid="uid://brbggcdygjljq" path="res://assets/sfx/Moonlighting [OlQKsavIDus].mp3" id="1_q5y64"]
 
 [node name="Bgm" type="AudioStreamPlayer" unique_id=1863562156]
 stream = ExtResource("1_q5y64")
+volume_db = -0.948
 autoplay = true

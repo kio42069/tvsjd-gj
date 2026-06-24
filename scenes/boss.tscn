@@ -290,7 +290,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8eiau")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"attack",
 "speed": 10.0
 }, {
@@ -355,7 +355,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o4ffm")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"death",
 "speed": 10.0
 }, {
@@ -436,7 +436,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_te2y6")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"skill",
 "speed": 10.0
 }, {
@@ -465,40 +465,66 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i78ob")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"summon",
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
-size = Vector2(20.5, 23)
+[sub_resource type="Animation" id="Animation_neq0i"]
+resource_name = "atk"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jncid"]
+_data = {
+&"atk": SubResource("Animation_neq0i")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u3epk"]
-size = Vector2(27, 59)
+size = Vector2(53, 143)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
+size = Vector2(15, 77.5)
 
 [node name="Boss" type="CharacterBody2D" unique_id=478411588]
 script = ExtResource("1_neq0i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=349047028]
-position = Vector2(3.8146973e-06, -3.8146973e-06)
-scale = Vector2(1.79, 1.79)
+position = Vector2(-1.0000076, 1.0000076)
+scale = Vector2(2.0925, 2.0925)
 sprite_frames = SubResource("SpriteFrames_u3epk")
-animation = &"skill"
+animation = &"summon"
 autoplay = "idle"
-frame_progress = 0.14291795
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=196559005 groups=["Player"]]
-position = Vector2(-5.25, -16)
-shape = SubResource("RectangleShape2D_c4vv4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1783409417]
+libraries/ = SubResource("AnimationLibrary_jncid")
 
 [node name="Spawner" type="Marker2D" parent="." unique_id=2105648300]
+position = Vector2(19.69, -35.36)
 
 [node name="StateTimer" type="Timer" parent="." unique_id=1971838705]
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=317381625 groups=["Enemy"]]
+collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1143479628]
-position = Vector2(-6.5, 9.5)
+[node name="Hurtbox" type="CollisionShape2D" parent="Hurtbox" unique_id=1143479628]
+position = Vector2(-11.5, 26.5)
 shape = SubResource("RectangleShape2D_u3epk")
+
+[node name="Hitbox" type="CollisionShape2D" parent="." unique_id=196559005 groups=["Player"]]
+position = Vector2(-19.5, 14.25)
+shape = SubResource("RectangleShape2D_c4vv4")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
