@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://r8fraqwobrb6" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bee414krk4twb" path="res://assets/sprites/industrial.v2.png" id="2_g2els"]
+[ext_resource type="AudioStream" uid="uid://ddsklfvpspjg8" path="res://assets/sfx/footsteps.wav" id="3_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -233,6 +234,10 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHurtbox" unique_id=886897886]
 position = Vector2(0, -8.25)
 shape = SubResource("RectangleShape2D_c4vv4")
+
+[node name="footsteps" type="AudioStreamPlayer2D" parent="." unique_id=15096625]
+stream = ExtResource("3_qhqgy")
+volume_db = 12.48
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="PlayerHurtbox" to="." method="_on_player_hurtbox_body_entered"]

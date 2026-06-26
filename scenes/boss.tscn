@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://d1ci63ktbj8ks" path="res://assets/sprites/boss/allanimation.png" id="1_dlmty"]
 [ext_resource type="Script" uid="uid://kudgqa7c37e8" path="res://scripts/boss.gd" id="1_neq0i"]
+[ext_resource type="AudioStream" uid="uid://dps2jcg3pkkj3" path="res://assets/sfx/bossentry.wav" id="3_qnbj4"]
+[ext_resource type="AudioStream" uid="uid://dai6vbmgcun6t" path="res://assets/sfx/bossexit.wav" id="4_r3bxh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_neq0i"]
 atlas = ExtResource("1_dlmty")
@@ -605,6 +607,12 @@ shape = SubResource("RectangleShape2D_tx0oy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScytheHitbox" unique_id=1835848200]
 position = Vector2(0.5, -46)
 shape = SubResource("RectangleShape2D_1vr6d")
+
+[node name="entrymusic" type="AudioStreamPlayer2D" parent="." unique_id=342643679]
+stream = ExtResource("3_qnbj4")
+
+[node name="deathmusic" type="AudioStreamPlayer2D" parent="." unique_id=1154322490]
+stream = ExtResource("4_r3bxh")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

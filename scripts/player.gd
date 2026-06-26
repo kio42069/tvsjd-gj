@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 enum State {IDLE, WALKING, JUMP, ATK}
 var current_state = State.IDLE
+@onready var footsteps: AudioStreamPlayer2D = $footsteps
 
 var SPEED = 300.0
 var spins = 200
@@ -94,7 +95,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * player_delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0, ACCELERATION * player_delta)
-	
+	if direction and timer % 17 == 0 and is_on_floor():
+		footsteps.play()
 	var time_ratio = player_time_scale / env_time_scale
 	velocity = velocity * time_ratio	
 	move_and_slide()

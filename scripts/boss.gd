@@ -3,13 +3,15 @@ extends CharacterBody2D
 enum BossState {IDLE, IDLE_2, ATTACK, SUMMON, SKILL, DEATH}
 @onready var boss_music: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var you_won: Label = $"../Labels/you won"
+@onready var entrymusic: AudioStreamPlayer2D = $entrymusic
+@onready var deathmusic: AudioStreamPlayer2D = $deathmusic
 
 var current_health: int
 @export var boss_walls: TileMapLayer
 
 var is_active: bool = false
 
-@export var max_health: int = 200
+@export var max_health: int = 20
 
 @export var speed: float = 200
 @onready var player: CharacterBody2D = %Player
@@ -142,7 +144,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 			
 func activate_boss() -> void:
 	current_health = max_health
-
+	entrymusic.play()
 	is_active = true
 	if boss_music and not boss_music.playing:
 		var weewoo = create_tween()
@@ -157,6 +159,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "death":
 		get_tree().call_group("BossMinions", "die")
 		boss_died.emit()
+		deathmusic.play()
 		start_outro_sequence()
 
 func start_outro_sequence():

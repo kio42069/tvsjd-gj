@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bee414krk4twb" path="res://assets/sprites/industrial.v2.png" id="1_ywqth"]
 [ext_resource type="Script" uid="uid://clelk33p0v6cq" path="res://scripts/checkpoint.gd" id="2_ywqth"]
+[ext_resource type="AudioStream" uid="uid://clppme40asg5y" path="res://assets/sfx/checkpoint.wav" id="3_vsimk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c4vv4"]
 size = Vector2(3.007042, 2.740438)
@@ -22,5 +23,8 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1506061630]
 position = Vector2(-2.0238044, 1.0695806)
 shape = SubResource("RectangleShape2D_c4vv4")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=822403898]
+stream = ExtResource("3_vsimk")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
