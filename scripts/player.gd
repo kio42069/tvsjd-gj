@@ -165,14 +165,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func _on_player_hurtbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemy"):
 		if body.is_in_group("Boss"):
-			print("Player hit by boss! Retracting spins.")
+			#print("Player hit by boss! Retracting spins.")
 			var twitch = create_tween()
 			twitch.tween_property(player, "modulate", Color.RED, 0.1)
 			twitch.tween_property(player, "modulate", Color.WHITE, 0.1)
 			spins = max(0, spins - 100)
 			whoaspins = max(0, whoaspins - 100)
 		else:
-			print("Player hit by enemy!")
+			#print("Player hit by enemy!")
 			var twitch = create_tween()
 			twitch.tween_property(player, "modulate", Color.RED, 0.1)
 			twitch.tween_property(player, "modulate", Color.WHITE, 0.1)

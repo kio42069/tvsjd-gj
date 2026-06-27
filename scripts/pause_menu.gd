@@ -18,7 +18,7 @@ func _input(event):
 		toggle_pause()
 
 func toggle_pause():
-	print("testing")
+	#print("testing")
 	var is_paused = !get_tree().paused
 	get_tree().paused = is_paused
 	control_panel.visible = is_paused
@@ -29,7 +29,7 @@ func _on_resume_button_pressed():
 
 # Connected from the OptionButton (Difficulty Dropdown)
 func _on_difficulty_button_item_selected(index: int):
-	print("difffff")
+	#print("difffff")
 	Management.set_difficulty(index)
 	
 	# OPTIONAL: If the boss is already live in the scene, 

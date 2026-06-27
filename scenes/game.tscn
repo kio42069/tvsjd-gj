@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://bvqhc4n4qn4ga" path="res://scenes/boss_ui.tscn" id="20_1kice"]
 [ext_resource type="Script" uid="uid://clsvpi44yppld" path="res://scripts/label.gd" id="21_5newe"]
 [ext_resource type="Texture2D" uid="uid://dopbfx77m73b5" path="res://assets/fonts/Keys1-sheet.png" id="22_37s47"]
+[ext_resource type="Script" uid="uid://d4ni3c7cusgf1" path="res://scripts/world_ends_here.gd" id="23_bt5mj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -1105,6 +1106,8 @@ region = Rect2(136, 112, 14, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pl11u"]
 size = Vector2(36.485, 23.965)
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c4vv4"]
+
 [node name="Game" type="Node2D" unique_id=1622926396]
 metadata/_edit_horizontal_guides_ = [-790.0, -1430.0]
 
@@ -1635,10 +1638,21 @@ shape = SubResource("RectangleShape2D_pl11u")
 action = "spin"
 visibility_mode = 1
 
+[node name="WorldEndsHere" type="Area2D" parent="." unique_id=1276887307]
+position = Vector2(99, 248)
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("23_bt5mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEndsHere" unique_id=1631066755]
+position = Vector2(4.29, 14.049999)
+shape = SubResource("WorldBoundaryShape2D_c4vv4")
+
 [connection signal="boss_activated" from="Boss" to="BossUI" method="_on_boss_boss_activated"]
 [connection signal="boss_died" from="Boss" to="BossUI" method="_on_boss_boss_died"]
 [connection signal="boss_died" from="Boss" to="Speedrun/Label" method="_on_boss_boss_died"]
 [connection signal="health_changed" from="Boss" to="BossUI" method="_on_boss_health_changed"]
 [connection signal="body_entered" from="BossActivator" to="BossActivator" method="_on_body_entered"]
+[connection signal="body_entered" from="WorldEndsHere" to="WorldEndsHere" method="_on_body_entered"]
 
 [editable path="BossUI"]

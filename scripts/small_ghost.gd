@@ -46,11 +46,11 @@ func die():
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "summon":
-		print("summonned")
+		#print("summonned")
 		is_active = true
 		sprite.play("idle") # Loop idle animation after spawning
 	elif sprite.animation == "death":
-		print("dying")
+		#print("dying")
 		queue_free() # Safely delete ghost from memory
 
 

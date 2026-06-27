@@ -41,7 +41,7 @@ func _physics_process(_delta: float) -> void:
 	# Death
 	speed = Management.boss_speed
 	max_health = Management.boss_speed
-	print("speed: ", speed, "max health: ", max_health)
+	#print("speed: ", speed, "max health: ", max_health)
 	if not is_active:
 		#print("idle")
 		return
