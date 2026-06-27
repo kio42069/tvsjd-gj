@@ -123,7 +123,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("spin"):
 		if spins <= 200:
 			spins += 10
-		whoaspins += 10
+		if whoaspins <= 700:
+			whoaspins += 10
 	if Input.is_action_just_pressed("unspin"):
 		spins -= 10
 		whoaspins -= 10
